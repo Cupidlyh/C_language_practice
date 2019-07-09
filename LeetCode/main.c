@@ -1,33 +1,37 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-int singleNumber(int* nums, int numsSize)
+int romanToInt(char * s)
 {
-    int i,j,flag=0;
-    for(i=0; i<numsSize; i++)//第i个元素与除了自身外的所有元素依次比较
+    int a[1000]={},i,b=0;
+    for(i=0; i<strlen(s); i++)//将字符数组的字母转换成所对应的数字一一对应存储起来
     {
-        for(j=0; j<numsSize; j++)
-        {
-            if(j==i)
-                continue;//序号相同时跳出此次循环执行下一次循环
-            if(nums[i]!=nums[j])
-            {
-                flag=1;
-            }
-            else
-            {
-                flag=0;//只要相同就不是所找元素，
-                break;//跳出此次循环
-            }
-        }
-        if(flag==1)
-        {
-            break;//比较到最后一个元素还不同时，即为所找元素，跳出整个循环
-        }
+        if(s[i]=='I')
+            a[i]=1;
+        if(s[i]=='V')
+            a[i]=5;
+        if(s[i]=='X')
+            a[i]=10;
+        if(s[i]=='L')
+            a[i]=50;
+        if(s[i]=='C')
+            a[i]=100;
+        if(s[i]=='D')
+            a[i]=500;
+        if(s[i]=='M')
+            a[i]=1000;
     }
-    if(numsSize==1)
-        i=0;//当整数数组中只有一个元素时，所找元素即为此元素
-    return nums[i];
+    for(i=0; i<strlen(s); i++)
+    {
+        if(a[i+1]>a[i]&&i!=strlen(s)-1)//后一个大的话就要后减前，注意不能判断到最后
+        {                              //注意i不能等于strlen（s）-1，如果等于的话最后一个就没参加运算
+            b=a[i+1]-a[i]+b;
+            i++;//因为小于需要相减，所以两个字母参加了运算，所以需要跳过i后面的那一项
+        }
+        else
+            b=b+a[i];
+
+    }
+    return b;
 }
-
-
